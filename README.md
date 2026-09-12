@@ -30,6 +30,7 @@ Plataforma de comercio electrónico basada en arquitectura de microservicios, co
 | `ms-products` | 3002 | 5002 | Catálogo de productos y categorías |
 | `ms-sales` | 3003 | - | Ventas y compras (consume gRPC de otros servicios) |
 | `ms-logs` | 3004 | - | Centralización de logs y métricas de negocio |
+| `frontend` | 3007 | - | Panel de administración Next.js (React 19 + pnpm) |
 
 ### Infraestructura (Docker)
 
@@ -44,6 +45,7 @@ Plataforma de comercio electrónico basada en arquitectura de microservicios, co
 ## Stack Tecnológico
 
 - **Runtime**: NestJS 11 (TypeScript)
+- **Frontend**: Next.js 16 + React 19 + Tailwind CSS v4 (pnpm)
 - **Base de datos**: PostgreSQL (TypeORM)
 - **Eventos**: Apache Kafka (kafkajs)
 - **Comunicación síncrona**: gRPC (@grpc/grpc-js, @grpc/proto-loader)
@@ -103,6 +105,11 @@ ecommerce/
 │           ├── logs/          # Consumidor Kafka + persistencia en Postgres + push a Loki
 │           ├── metrics/       # Métricas Prometheus
 │           └── common/        # Middleware HTTP metrics
+│
+├── frontend/                  # Panel de administración Next.js (puerto 3007)
+│   ├── app/                   # App Router: rutas y API routes (BFF)
+│   ├── components/            # Componentes UI (Tailwind)
+│   └── lib/                   # Lógica de cliente, sesión y proxy
 │
 ├── infra/
 │   ├── prometheus/            # Configuración de scraping
@@ -176,6 +183,17 @@ cp .env.example .env  # Configurar DB_NAME=db_logs
 npm install
 npm run start:dev
 ```
+
+### 5. Instalar y ejecutar frontend
+
+```bash
+cd frontend
+cp .env.example .env.local  # API_GATEWAY_URL y JWT_SECRET (igual al del api-gateway)
+pnpm install
+pnpm dev   # http://localhost:3007
+```
+
+> Requiere el `api-gateway` (puerto 3000) levantado y `JWT_SECRET` coincidiendo con el del gateway. Detalles en [`frontend/README.md`](frontend/README.md).
 
 ## Endpoints
 
