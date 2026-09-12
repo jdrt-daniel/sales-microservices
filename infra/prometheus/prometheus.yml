@@ -1,0 +1,35 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  # Los microservicios corren en el host (no en Docker), así que se escanean
+  # via host.docker.internal en los puertos HTTP de cada app.
+  - job_name: 'api-gateway'
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['host.docker.internal:3000']
+
+  - job_name: 'ms-users'
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['host.docker.internal:3001']
+
+  - job_name: 'ms-products'
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['host.docker.internal:3002']
+
+  - job_name: 'ms-sales'
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['host.docker.internal:3003']
+
+  - job_name: 'ms-logs'
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['host.docker.internal:3004']
+
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']

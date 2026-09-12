@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package users;
+
+service UsersGrpcService {
+  rpc ValidateClient (ClientIdRequest) returns (ClientResponse);
+}
+
+message ClientIdRequest {
+  string id = 1;
+}
+
+message ClientResponse {
+  string id = 1;
+  string fullName = 2;
+  bool exists = 3;
+}
